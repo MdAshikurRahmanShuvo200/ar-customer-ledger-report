@@ -34,8 +34,11 @@ With the checkbox **checked**, the report expands each customer to show every in
 
 ### Sample Generated Report (Crystal Reports PDF export)
 
-📄 See [`docs/ar_demo_customer.pdf`](docs/ar_demo_customer.pdf) for a full sample export of the report (dummy data, grouped by Account Set → Customer, with running Opening/Debit/Credit/Closing balances and a grand total).
+### Sample Generated Report (Crystal Reports PDF export)
 
+📄 See [`AR_Master_Ledger/docs/customer ledger dummy with details.pdf`](AR_Master_Ledger/docs/customer%20ledger%20dummy%20with%20details.pdf) — full detail-journal export (dummy data, transaction-level, with running Opening/Debit/Credit/Closing balances and a grand total).
+
+📄 See [`AR_Master_Ledger/docs/customer ledger dummy without details.pdf`](AR_Master_Ledger/docs/customer%20ledger%20dummy%20without%20details.pdf) — summarized export (one line per customer per Account Set, no individual transactions).
 > 📌 **Add your own screenshots/video here** — see the [📸 Media / Demo section](#-media--demo-add-your-own) below for exactly where to drop new files.
 
 ---
