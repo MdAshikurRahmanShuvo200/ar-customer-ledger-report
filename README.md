@@ -1,367 +1,452 @@
-# 📊 AR Master Ledger (Customer Ledger Report)
+# 📊 AR Master Ledger — Customer Ledger Report
 
-A **VB.NET (WinForms) + Crystal Reports + SQL Server** desktop application that generates a professional, print-ready **Accounts Receivable (AR) Customer Ledger** report — with date range, customer range, and account-set range filters — replicating the look and logic of a real ERP AR module.
+A professional **Accounts Receivable (AR) Customer Ledger** desktop application built with **VB.NET, Crystal Reports, and Microsoft SQL Server**.
 
-> ⚠️ **Disclaimer:** This is a **demo / portfolio project**. No real company, customer, or transaction data is used anywhere in this repository. All company names, customer names, invoice numbers, and amounts are **fictional dummy data** generated only to demonstrate the report design and SQL logic. In the original production system this report is based on, the underlying ERP database has **300+ tables**; for this public demo, that data model has been **simplified down to a single flat table + one SQL view** so the logic can be shared safely without exposing proprietary schema or client data.
+The application allows users to generate a print-ready customer ledger with flexible filtering by **date range, customer range, and account-set range**, along with both **summary and transaction-level detail views**.
+
+> **Disclaimer:** This is a demo/portfolio project. All customer names, transaction data, invoice numbers, amounts, and other business data used in this repository are fictional dummy data. No real company or customer data is included.
+
+---
+
+## 📌 Project Overview
+
+**AR Master Ledger** is designed to demonstrate how an ERP-style **Accounts Receivable Customer Ledger** can be developed using VB.NET, SQL Server, and Crystal Reports.
+
+The application provides:
+
+* Customer-wise ledger reporting
+* Account Set-wise grouping
+* Opening and closing balance calculation
+* Debit and Credit transaction tracking
+* Transaction-level journal details
+* Date, Customer ID, and Account Set filtering
+* Ageing / Days Over calculation
+* Crystal Reports preview, printing, and export functionality
+
+The project uses a simplified demo database structure so that the SQL logic and reporting workflow can be shared publicly without exposing any proprietary ERP database structure.
 
 ---
 
 ## 🖼️ Screenshots
 
-### Main Report Parameter Form
-<img width="1120" alt="AR Ledger summary output" src="https://github.com/user-attachments/assets/b156afee-4999-48c4-92d2-cbf223d84664" /> |
+### Main Parameter Form
 
-*The form lets the user filter by From/To Date, From/To Customer ID, From/To A/C Set ID, and an optional "Customer Detail Journals" toggle before clicking **Show Report**.*
+<img width="1120" alt="AR Master Ledger Parameter Form" src="https://github.com/user-attachments/assets/b156afee-4999-48c4-92d2-cbf223d84664" />
 
-### Report Output — Without "Customer Detail Journals" (Summary View)
+The parameter form allows users to select:
 
-| Parameters used | Report output |
-|---|---|
-| <img width="556" alt="AR Master Ledger parameter form" src="https://github.com/user-attachments/assets/ef7358f7-3b19-4fc1-8c57-c1f128f5778d" /> | <img width="792" height="416" alt="image" src="https://github.com/user-attachments/assets/1e2b1478-469b-4bff-b1b1-cdc55a1ffc79" />
- />
- |
+* From Date / To Date
+* From Customer ID / To Customer ID
+* From A/C Set ID / To A/C Set ID
+* Customer Detail Journals option
 
-With the checkbox left **unchecked**, the report shows one summarized line per customer per Account Set — just the running Opening → Debit → Credit → Closing balance, no individual transactions.
-
-### Report Output — With "Customer Detail Journals" (Detail View)
-
-| Parameters used | Report output |
-|---|---|
-|<img width="558" height="269" alt="image" src="https://github.com/user-attachments/assets/478212cd-0698-4e24-afdf-77d1425a0a99" /> | <img width="926" height="458" alt="image" src="https://github.com/user-attachments/assets/107b9f40-15ba-4cb1-909f-0cbf29f892d1" />
- |
-
-
-
-### Sample Generated Report (Crystal Reports PDF export)
-
-📄 See [`AR_Master_Ledger/docs/customer ledger dummy with details.pdf`](AR_Master_Ledger/docs/customer%20ledger%20dummy%20with%20details.pdf) — full detail-journal export (dummy data, transaction-level, with running Opening/Debit/Credit/Closing balances and a grand total).
-
-📄 See [`AR_Master_Ledger/docs/customer ledger dummy without details.pdf`](AR_Master_Ledger/docs/customer%20ledger%20dummy%20without%20details.pdf) — summarized export (one line per customer per Account Set, no individual transactions).
-### 📹 Application Demo
-For a step-by-step walkthrough of the parameter selection, report generation, and filtering features, check out the video below:
-
-<a href="https://drive.google.com/file/d/14zHBKjMsyCiGkCaJOf1O0vNxzHj24Wzn/view?usp=drive_link" target="_blank">🎬 Watch Demo Video</a>
+After selecting the required parameters, users can click **Show Report** to generate the ledger.
 
 ---
 
-## ✨ Features
+### 📄 Summary Report
 
-- Filter by **Date Range**, **Customer ID Range**, and **A/C Set ID Range**
-- Optional **Customer Detail Journals** view (transaction-level detail vs. summary)
-- Automatic **Opening Balance → Debit → Credit → Closing Balance** running totals per customer
-- Grouped subtotals by **Account Set** (e.g. Commercial / Corporate / Retail) and grand totals for the whole report
-- **"Days Over"** (ageing) calculation for invoices
-- Built with **Crystal Reports for VB.NET**, so it can be previewed, printed, or exported (PDF/Excel/Word) directly from the WinForms viewer
-- Powered by a single **SQL Server view** (`vw_AR_TRANSACTION`) that does all the balance-calculation logic, so the report itself stays simple
+When **Customer Detail Journals** is unchecked, the report displays a summarized ledger view.
 
----
+| Parameters                                                                                                                                      | Report Output                                                                                                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <img width="556" alt="AR Master Ledger Parameter Form" src="https://github.com/user-attachments/assets/ef7358f7-3b19-4fc1-8c57-c1f128f5778d" /> | <img width="792" height="416" alt="AR Master Ledger Summary Report" src="https://github.com/user-attachments/assets/1e2b1478-469b-4bff-b1b1-cdc55a1ffc79" /> |
 
-## 🧰 Tech Stack
-
-| Layer | Technology |
-|---|---|
-| UI / Application | VB.NET (Windows Forms, .NET Framework) |
-| Reporting Engine | SAP Crystal Reports for Visual Studio |
-| Database | Microsoft SQL Server (T-SQL) |
-| Data Access | ADO.NET (`SqlConnection` / `SqlCommand` / `SqlDataAdapter`) or Crystal's built-in SQL Command / ADO.NET dataset |
-| Report Data Source | SQL View: `dbo.vw_AR_TRANSACTION` |
+The summary view provides customer/account-set level balances without displaying individual transactions.
 
 ---
 
-## 🗄️ Database Design — Tables, Columns & Joins
+### 📑 Detailed Customer Journal
 
-This is the part most people ask about, so here it is in full detail.
+When **Customer Detail Journals** is enabled, the report displays transaction-level details.
 
-### 1. Table used
+| Parameters                                                                                                                                                      | Report Output                                                                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="558" height="269" alt="AR Master Ledger Detail Parameters" src="https://github.com/user-attachments/assets/478212cd-0698-4e24-afdf-77d1425a0a99" /> | <img width="926" height="458" alt="AR Master Ledger Detailed Report" src="https://github.com/user-attachments/assets/107b9f40-15ba-4cb1-909f-0cbf29f892d1" /> |
 
-Only **one physical table** is used in this demo:
+The detailed report includes individual transactions along with running:
 
-```
-dbo.AR_TRANSACTION_DEMO
-```
-
-In the real/original system this report was modeled after, this same information is normally assembled by joining **many** ERP tables (AR transaction header/detail, customer master, account set master, bank master, currency, batch/entry control tables, etc. — 300+ tables exist in that full schema). For this public demo, all of that has been **pre-flattened into one demo table** so the SQL can be shared without exposing the real schema.
-
-### 2. Columns in `AR_TRANSACTION_DEMO`
-
-| Column | Data Type | Meaning |
-|---|---|---|
-| `ID` | `INT IDENTITY` | Surrogate primary key |
-| `TransactionDate` | `DATE` | Date of the transaction |
-| `TransactionType` | `VARCHAR(50)` | Invoice / Receipt / Credit Note / Debit Note / Advance Receipt / Unapplied Cash / Apply Document / Write-Off / Adjustment |
-| `IDCUST` | `VARCHAR(20)` | Customer ID (e.g. `CUST-101`) |
-| `[DOC NUMBER]` | `VARCHAR(30)` | Document number of the entry itself |
-| `AppliedDocument` | `VARCHAR(30)` | The document this entry is applied against (e.g. a receipt applied to an invoice) |
-| `NAMECUST` | `NVARCHAR(100)` | Customer name |
-| `IDACCTSET` | `VARCHAR(10)` | Account Set ID (e.g. `AC-COMM`, `AC-CORP`, `AC-RTL`) |
-| `TEXTDESC` | `NVARCHAR(50)` | Account Set description (e.g. "Commercial Accounts") |
-| `CNTBTCH` | `INT` | Batch number |
-| `CNTITEM` | `INT` | Entry number within the batch |
-| `SourceCode` | `VARCHAR(10)` | Transaction source code (`AR-IN`, `AR-PY`, `AR-CR`, `AR-DN`, `AR-PI`, `AR-UC`, `AR-AD`, `AR-WO`) |
-| `DocNumber` | `VARCHAR(30)` | The invoice/document number this transaction relates to |
-| `Description` | `NVARCHAR(255)` | Free-text entry description |
-| `BankCode` / `[Bank Name]` | `VARCHAR(10)` / `NVARCHAR(100)` | Bank used for receipts/payments |
-| `Invoice` | `DECIMAL(19,3)` | Invoice amount |
-| `[Debit Note]` | `DECIMAL(19,3)` | Debit note amount |
-| `[Credit Note]` | `DECIMAL(19,3)` | Credit note amount |
-| `Receipt` | `DECIMAL(19,3)` | Receipt/payment amount |
-| `[Advance Receipt]` | `DECIMAL(19,3)` | Advance received from customer |
-| `[Unapplied Cash]` | `DECIMAL(19,3)` | Cash received but not yet applied to an invoice |
-| `[Apply Document]` | `DECIMAL(19,3)` | Amount used when an advance is applied to an invoice |
-| `[Write-Off]` | `DECIMAL(19,3)` | Bad-debt / balance write-off amount |
-| `Adjustment` | `DECIMAL(19,3)` | Manual adjustment (rounding, tax correction, etc.) |
-
-### 3. Joins used — **there are none** (and why)
-
-This demo intentionally uses **zero JOINs**. The single table above already contains everything the report needs (customer name, account set description, bank name, all amount buckets), because it stands in for what would otherwise be a multi-table join across the customer master, account-set master, bank master, and transaction header/detail tables in a real ERP.
-
-All the "smart" work happens in a **SQL View** using **window functions**, not joins:
-
-```sql
-dbo.vw_AR_TRANSACTION
-```
-
-### 4. What the view (`vw_AR_TRANSACTION`) actually does
-
-The view wraps the table in a CTE (`CalculatedLedger`) and computes:
-
-| Calculated Column | Formula (simplified) | Purpose |
-|---|---|---|
-| **Transaction Amount** | `Invoice − DebitNote + CreditNote − Receipt − AdvanceReceipt − UnappliedCash − ApplyDocument − WriteOff + Adjustment` | Net effect of one row on the customer's balance |
-| **Opening Balance** | `SUM(Transaction Amount)` using `OVER (PARTITION BY IDCUST ORDER BY TransactionDate, CNTBTCH, CNTITEM ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING)` | Running balance **before** this row, per customer |
-| **Closing Amount** | Same window function but `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` | Running balance **including** this row |
-| **Debit** | `CASE WHEN Transaction Amount > 0 THEN Transaction Amount ELSE 0` | Splits the net amount into a Debit column for display |
-| **Credit** | `CASE WHEN Transaction Amount < 0 THEN ABS(Transaction Amount) ELSE 0` | Splits the net amount into a Credit column for display |
-| **Days Over** | `DATEDIFF(DAY, TransactionDate, GETDATE())` only when `SourceCode = 'AR-IN'` | Ageing (days overdue) for invoices only |
-| **Customer_ID_M** | `TRY_CONVERT(INT, REPLACE([Customer ID], 'CUST-', ''))` | Numeric version of the Customer ID, used for sorting/range filtering (`From/To Customer ID`) |
-
-So instead of `GROUP BY` + multiple joined subqueries, this uses **`SUM(...) OVER (PARTITION BY ... ORDER BY ...)`** — a running-total window function — which is what lets Crystal Reports simply consume the view row-by-row and print Opening/Debit/Credit/Closing without doing any balance math inside the report itself.
-
-### 5. Parameters used by the Crystal Report / VB.NET form
-
-These map directly to the WHERE clause applied on top of `vw_AR_TRANSACTION` when the **Show Report** button is clicked:
-
-| Form Field | Maps to View Column | Type |
-|---|---|---|
-| From Date / To Date | `TransactionDate` | Date range |
-| From Customer ID / To Customer ID | `Customer_ID_M` (or `[Customer ID]`) | Range |
-| From A/C Set ID / To A/C Set ID | `[Account Set ID]` | Range |
-| Customer Detail Journals (checkbox) | Controls whether the report shows transaction-level detail or a summarized ledger | Boolean toggle |
+**Opening → Debit → Credit → Closing Balance**
 
 ---
 
-## 🏗️ Architecture / How It Works
+## 📄 Sample Reports
+
+### Detailed Customer Ledger
+
+[View Detailed Customer Ledger PDF](AR_Master_Ledger/docs/customer%20ledger%20dummy%20with%20details.pdf)
+
+Transaction-level customer ledger with running balances and grand totals.
+
+### Summary Customer Ledger
+
+[View Summary Customer Ledger PDF](AR_Master_Ledger/docs/customer%20ledger%20dummy%20without%20details.pdf)
+
+Summarized customer ledger without individual transaction details.
+
+---
+
+## 🎥 Application Demo
+
+A complete walkthrough demonstrating parameter selection, filtering, report generation, and Crystal Reports output.
+
+<a href="https://drive.google.com/file/d/14zHBKjMsyCiGkCaJOf1O0vNxzHj24Wzn/view?usp=drive_link" target="_blank">
+
+🎬 **Watch Application Demo**
+
+</a>
+
+---
+
+## ✨ Key Features
+
+* 📅 **Date Range Filtering**
+* 👤 **Customer ID Range Filtering**
+* 🏦 **Account Set Range Filtering**
+* 📑 **Summary Ledger View**
+* 📋 **Transaction-Level Detail View**
+* 💰 **Opening Balance Calculation**
+* ➕ **Debit Calculation**
+* ➖ **Credit Calculation**
+* 💵 **Closing / Running Balance**
+* 📊 **Account Set-wise Subtotals**
+* 🧮 **Grand Total Calculation**
+* ⏱️ **Days Over / Ageing Calculation**
+* 🖨️ **Print-Ready Crystal Reports**
+* 📤 **PDF / Excel / Word Export**
+* 🗃️ **SQL Server-based Data Processing**
+
+---
+
+## 🧰 Technology Stack
+
+| Layer              | Technology                            |
+| ------------------ | ------------------------------------- |
+| Application        | VB.NET                                |
+| UI                 | Windows Forms                         |
+| Framework          | .NET Framework                        |
+| Reporting          | SAP Crystal Reports for Visual Studio |
+| Database           | Microsoft SQL Server                  |
+| Query Language     | T-SQL                                 |
+| Data Access        | ADO.NET                               |
+| Report Data Source | SQL Server View                       |
+
+---
+
+## 🏗️ Application Architecture
 
 ```mermaid
 flowchart LR
-    A["VB.NET WinForms<br/>frmARMasterLedger"] -- "1. User sets<br/>Date / Customer / A-C Set range" --> B["Crystal Report<br/>AR Customer Ledger (.rpt)"]
-    B -- "2. Passes parameters" --> C["SQL Command / ADO.NET<br/>SqlConnection"]
-    C -- "3. Queries" --> D[("SQL Server<br/>dbo.vw_AR_TRANSACTION")]
-    D -- "4. Reads from" --> E[("dbo.AR_TRANSACTION_DEMO")]
-    D -- "5. Filtered, calculated rows" --> C
-    C -- "6. DataSet / DataTable" --> B
-    B -- "7. Rendered report" --> F["CrystalReportViewer<br/>Preview / Print / Export PDF"]
+
+    A["VB.NET WinForms<br/>Parameter Form"]
+    B["Crystal Report<br/>AR Customer Ledger"]
+    C["ADO.NET / SQL Command"]
+    D[("SQL Server<br/>vw_AR_TRANSACTION")]
+    E[("AR_TRANSACTION_DEMO")]
+    F["CrystalReportViewer<br/>Preview / Print / Export"]
+
+    A -->|"Select Parameters"| B
+    B -->|"Pass Parameters"| C
+    C -->|"Query"| D
+    D -->|"Read Data"| E
+    D -->|"Calculated / Filtered Data"| C
+    C -->|"DataSet / DataTable"| B
+    B --> F
 ```
 
-```mermaid
-erDiagram
-    AR_TRANSACTION_DEMO {
-        int ID PK
-        date TransactionDate
-        varchar TransactionType
-        varchar IDCUST
-        varchar DOC_NUMBER
-        varchar AppliedDocument
-        nvarchar NAMECUST
-        varchar IDACCTSET
-        nvarchar TEXTDESC
-        int CNTBTCH
-        int CNTITEM
-        varchar SourceCode
-        varchar DocNumber
-        nvarchar Description
-        varchar BankCode
-        nvarchar Bank_Name
-        decimal Invoice
-        decimal Debit_Note
-        decimal Credit_Note
-        decimal Receipt
-        decimal Advance_Receipt
-        decimal Unapplied_Cash
-        decimal Apply_Document
-        decimal Write_Off
-        decimal Adjustment
-    }
-    vw_AR_TRANSACTION {
-        all_columns_from_base_table plus
-        decimal Transaction_Amount
-        decimal Opening_Balance
-        decimal Debit
-        decimal Credit
-        decimal Closing_Amount
-        int Days_Over
-        int Customer_ID_M
-    }
-    AR_TRANSACTION_DEMO ||--|| vw_AR_TRANSACTION : "read by (no JOIN, window functions only)"
+### Workflow
+
+1. User selects report parameters from the VB.NET form.
+2. The application passes the selected parameters to the report/data layer.
+3. SQL Server processes the required transaction data.
+4. The SQL View calculates running balances and other derived values.
+5. Crystal Reports receives the processed data.
+6. The report is displayed through `CrystalReportViewer`.
+7. Users can preview, print, or export the report.
+
+---
+
+# 🗄️ Database Design
+
+For this public demo, the database has been simplified into **one transaction table and one SQL View**.
+
+This simplified structure demonstrates the reporting logic without exposing any proprietary ERP database schema.
+
+---
+
+## 1. Demo Transaction Table
+
+```text
+dbo.AR_TRANSACTION_DEMO
 ```
+
+### Main Columns
+
+| Column              | Data Type    | Description                         |
+| ------------------- | ------------ | ----------------------------------- |
+| `ID`                | INT IDENTITY | Primary key                         |
+| `TransactionDate`   | DATE         | Transaction date                    |
+| `TransactionType`   | VARCHAR      | Invoice, Receipt, Credit Note, etc. |
+| `IDCUST`            | VARCHAR      | Customer ID                         |
+| `[DOC NUMBER]`      | VARCHAR      | Transaction document number         |
+| `AppliedDocument`   | VARCHAR      | Related/applied document            |
+| `NAMECUST`          | NVARCHAR     | Customer name                       |
+| `IDACCTSET`         | VARCHAR      | Account Set ID                      |
+| `TEXTDESC`          | NVARCHAR     | Account Set description             |
+| `CNTBTCH`           | INT          | Batch number                        |
+| `CNTITEM`           | INT          | Entry number                        |
+| `SourceCode`        | VARCHAR      | Transaction source                  |
+| `DocNumber`         | VARCHAR      | Related document number             |
+| `Description`       | NVARCHAR     | Transaction description             |
+| `BankCode`          | VARCHAR      | Bank code                           |
+| `[Bank Name]`       | NVARCHAR     | Bank name                           |
+| `Invoice`           | DECIMAL      | Invoice amount                      |
+| `[Debit Note]`      | DECIMAL      | Debit Note amount                   |
+| `[Credit Note]`     | DECIMAL      | Credit Note amount                  |
+| `Receipt`           | DECIMAL      | Receipt/payment amount              |
+| `[Advance Receipt]` | DECIMAL      | Advance receipt                     |
+| `[Unapplied Cash]`  | DECIMAL      | Unapplied cash                      |
+| `[Apply Document]`  | DECIMAL      | Applied document amount             |
+| `[Write-Off]`       | DECIMAL      | Write-off amount                    |
+| `Adjustment`        | DECIMAL      | Adjustment amount                   |
+
+---
+
+## 2. SQL View
+
+```text
+dbo.vw_AR_TRANSACTION
+```
+
+The SQL View performs the main ledger calculations before the data reaches Crystal Reports.
+
+### Calculated Values
+
+| Calculation        | Purpose                                           |
+| ------------------ | ------------------------------------------------- |
+| Transaction Amount | Calculates the net effect of each transaction     |
+| Opening Balance    | Balance before the current transaction            |
+| Debit              | Positive transaction amount                       |
+| Credit             | Negative transaction amount                       |
+| Closing Amount     | Running balance including the current transaction |
+| Days Over          | Invoice ageing calculation                        |
+| Customer_ID_M      | Numeric customer ID used for range filtering      |
+
+### Transaction Amount
+
+The transaction amount is calculated using:
+
+```text
+Invoice
+− Debit Note
++ Credit Note
+− Receipt
+− Advance Receipt
+− Unapplied Cash
+− Apply Document
+− Write-Off
++ Adjustment
+```
+
+---
+
+## 🔄 Running Balance Logic
+
+The project uses SQL Server **Window Functions** to calculate running balances.
+
+Conceptually:
+
+```sql
+SUM(TransactionAmount)
+OVER (
+    PARTITION BY IDCUST
+    ORDER BY TransactionDate, CNTBTCH, CNTITEM
+)
+```
+
+This allows the SQL layer to calculate the customer's running balance before Crystal Reports renders the final report.
+
+---
+
+## 🔎 Report Parameters
+
+| Form Parameter           | Database Field    | Purpose                      |
+| ------------------------ | ----------------- | ---------------------------- |
+| From Date                | `TransactionDate` | Starting transaction date    |
+| To Date                  | `TransactionDate` | Ending transaction date      |
+| From Customer ID         | `Customer_ID_M`   | Starting customer            |
+| To Customer ID           | `Customer_ID_M`   | Ending customer              |
+| From A/C Set ID          | `IDACCTSET`       | Starting Account Set         |
+| To A/C Set ID            | `IDACCTSET`       | Ending Account Set           |
+| Customer Detail Journals | Boolean           | Summary / Detail report mode |
 
 ---
 
 ## 📁 Project Structure
 
-> This is a **suggested / typical** structure for a VB.NET + Crystal Reports solution like this one. Rename folders/files to match your actual solution — the important part is keeping SQL, Reports, Forms, and Docs separated like this so the repo stays easy to navigate.
-
-```
+```text
 AR_Master_Ledger/
 │
-├── AR_Master_Ledger.sln                 # Visual Studio solution file
-├── AR_Master_Ledger.vbproj              # VB.NET project file
+├── AR_Master_Ledger.sln
+├── AR_Master_Ledger.vbproj
 │
 ├── Forms/
-│   ├── frmARMasterLedger.vb             # Main parameter form (screenshot above)
+│   ├── frmARMasterLedger.vb
 │   └── frmARMasterLedger.Designer.vb
 │
 ├── Reports/
-│   └── rptARCustomerLedger.rpt          # Crystal Report definition
+│   └── rptARCustomerLedger.rpt
 │
 ├── Modules/
-│   ├── modDatabaseConnection.vb         # SqlConnection / connection string handling
-│   └── modReportHelper.vb               # Passes parameters to Crystal Report, opens viewer
+│   ├── modDatabaseConnection.vb
+│   └── modReportHelper.vb
 │
 ├── SQL/
-│   └── Demo_AR_Customer_Ledger.sql      # Table + View creation script (this repo's SQL)
-│
-├── docs/
-│   ├── ar_demo_customer.pdf             # Sample exported report (dummy data)
 │   └── Demo_AR_Customer_Ledger.sql
 │
-├── screenshots/
-│   └── ar-master-ledger-form.png        # Form screenshot used in this README
+├── docs/
+│   ├── customer ledger dummy with details.pdf
+│   └── customer ledger dummy without details.pdf
 │
-├── media/                                # 👉 put demo video / GIF here (see below)
+├── screenshots/
+│   └── ar-master-ledger-form.png
+│
+├── media/
 │
 ├── .gitignore
 ├── LICENSE
-└── README.md                             # you are here
+└── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+# 🚀 Getting Started
 
-### Prerequisites
-- Visual Studio (2019/2022) with **VB.NET** and **Crystal Reports for Visual Studio** runtime/SDK installed
-- Microsoft SQL Server (2016+) — Express edition is fine for testing
-- SQL Server Management Studio (optional, for running the script manually)
+## Prerequisites
 
-### Setup
-1. Restore the database:
-   ```sql
-   -- Run this in SSMS or via sqlcmd
-   :r SQL/Demo_AR_Customer_Ledger.sql
-   ```
-   This will create `Demo_Database`, the `AR_TRANSACTION_DEMO` table, insert dummy demo rows, and create the `vw_AR_TRANSACTION` view.
-2. Update the connection string in `modDatabaseConnection.vb` to point to your SQL Server instance.
-3. Open `AR_Master_Ledger.sln` in Visual Studio, restore/build.
-4. Run the project → the **AR Master Ledger** form (see screenshot) will open.
-5. Pick a date range / customer range / A-C set range → click **Show Report**.
+Before running the project, install:
+
+* **Visual Studio 2019 / 2022**
+* **VB.NET / .NET Framework**
+* **SAP Crystal Reports for Visual Studio**
+* **Microsoft SQL Server 2016 or later**
+* **SQL Server Management Studio (SSMS)**
 
 ---
 
-## 📸 Media / Demo (add your own)
+## ⚙️ Installation
 
-This section is a placeholder so future contributors (or future-you) know exactly where to drop new media when updating the repo:
-
-| What to add | Where to put it | How to reference it in README |
-|---|---|---|
-| New/updated form screenshots | `screenshots/` | `![Alt text](screenshots/your-file.png)` |
-| Report output samples (PDF/PNG) | `docs/` | Link as `[Sample Report](docs/your-file.pdf)` |
-| Demo video (screen recording of the app running) | `media/` | Upload to YouTube/Drive and embed a thumbnail: `[![Demo Video](screenshots/thumbnail.png)](https://your-video-link)` — GitHub READMEs can't autoplay video files directly, so a clickable thumbnail linking out works best |
-| Short GIF walkthrough | `media/demo.gif` | `![Demo GIF](media/demo.gif)` |
-
-*(Once you record a walkthrough, just drop the file in `media/` and swap this table's placeholder text for the real embed.)*
-
----
-
-## 🔒 Data Privacy Note
-
-- ✅ All customer names, invoice numbers, dates, and amounts in this repository (SQL script, PDF sample, and screenshots) are **synthetically generated dummy data**.
-- ❌ **No real client, customer, or company data** has been used or exposed at any point in this project.
-- The 300+ table production schema this design is based on is **not** included here — only a simplified single-table + view version, built purely to demonstrate the report/query logic publicly.
-
----
-
-## 🐙 How to Push This Project to GitHub (step-by-step)
-
-If you haven't put this project on GitHub yet, here's the full guide:
-
-### 1. Create the repository on GitHub
-1. Go to [github.com](https://github.com) and log in.
-2. Click the **`+`** icon (top right) → **New repository**.
-3. Fill in:
-   - **Repository name**: e.g. `ar-master-ledger`
-   - **Description**: "VB.NET + Crystal Reports + SQL Server demo — AR Customer Ledger report"
-   - Choose **Public** or **Private**
-   - ✅ Check **Add a README file** — *or leave it unchecked since you already have this one*
-   - Add a `.gitignore` template: choose **VisualStudio** (it already excludes `bin/`, `obj/`, `.vs/`, etc.)
-   - Choose a license (e.g. MIT) if you want it open-source
-4. Click **Create repository**.
-
-### 2. Initialize Git locally (in your project folder)
-Open a terminal / Git Bash / VS Code terminal in your project folder and run:
+### 1. Clone the Repository
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit: AR Master Ledger (VB.NET + Crystal Reports + SQL Server)"
+git clone https://github.com/your-username/ar-master-ledger.git
+cd ar-master-ledger
 ```
 
-### 3. Connect your local folder to the GitHub repo
-Copy the remote URL from your new GitHub repo page (it looks like `https://github.com/your-username/ar-master-ledger.git`), then:
+### 2. Create the Demo Database
 
-```bash
-git branch -M main
-git remote add origin https://github.com/your-username/ar-master-ledger.git
-git push -u origin main
+Open the SQL script:
+
+```text
+SQL/Demo_AR_Customer_Ledger.sql
 ```
 
-### 4. Day-to-day workflow after that
-Every time you make changes:
+Run the script in **SQL Server Management Studio**.
 
-```bash
-git add .
-git commit -m "Describe what you changed"
-git push
+The script creates:
+
+* Demo database
+* `AR_TRANSACTION_DEMO` table
+* Sample dummy transaction data
+* `vw_AR_TRANSACTION` SQL View
+
+### 3. Configure Database Connection
+
+Update the SQL Server connection information in:
+
+```text
+modDatabaseConnection.vb
 ```
 
-### 5. Recommended `.gitignore` additions for VB.NET + Crystal Reports projects
-Make sure these are ignored (Visual Studio's default template usually already covers most):
+Use your own local SQL Server instance and credentials.
 
-```gitignore
-bin/
-obj/
-.vs/
-*.user
-*.suo
-*.cache
-packages/
-*.rpt.data     # cached Crystal Reports data (not the .rpt design file itself)
+> **Important:** Never commit real database passwords, server credentials, or production connection strings to GitHub.
+
+### 4. Open the Project
+
+Open:
+
+```text
+AR_Master_Ledger.sln
 ```
 
-### 6. Tips for a good public repo
-- Keep the actual `.rpt` file in the repo (it's your report design) but never commit real production data.
-- If your connection string has real server names/passwords, move it to a config file and add that file to `.gitignore` — don't hardcode secrets.
-- Add topics/tags on GitHub like `vbnet`, `crystal-reports`, `sql-server`, `accounts-receivable`, `erp` so people can find it.
-- Pin this repo on your GitHub profile if it's a good portfolio piece — the screenshots + PDF sample above make it easy for a recruiter to understand the project in 30 seconds.
+using Visual Studio.
+
+### 5. Build and Run
+
+Build the solution and run the application.
+
+The **AR Master Ledger** parameter form will open.
+
+Select the required filters and click:
+
+```text
+Show Report
+```
 
 ---
 
-## 📄 License
+# 🔐 Data Privacy
 
-Add your preferred license here (MIT recommended for portfolio projects).
+This repository contains only **synthetic demo data**.
+
+* ✅ Customer information is fictional
+* ✅ Transaction data is fictional
+* ✅ Invoice numbers are fictional
+* ✅ Amounts are dummy values
+* ❌ No real customer data is included
+* ❌ No real company data is included
+* ❌ No production database schema or credentials are included
+
+The public version uses a simplified database structure specifically for portfolio and demonstration purposes.
 
 ---
 
-## 🙋 Support / Questions
+# 📚 Learning & Technical Highlights
 
-Feel free to open an [Issue](../../issues) on this repository if something doesn't run as expected, or you want to suggest an improvement.
+This project demonstrates practical experience with:
+
+* VB.NET Windows Forms development
+* SQL Server database design
+* T-SQL queries and views
+* SQL Window Functions
+* Running balance calculations
+* Accounts Receivable concepts
+* Crystal Reports development
+* Report parameter handling
+* Data filtering
+* Grouping and subtotal calculations
+* PDF / Excel / Word report export
+* ADO.NET database connectivity
+* ERP-style reporting workflows
+
+---
+
+# 📄 License
+
+This project is intended for **educational and portfolio purposes**.
+
+If you choose to make the repository open source, an **MIT License** can be added to the project.
+
+---
+
+## 👨‍💻 Author
+
+**Md Ashikur Rahman Shuvo**
+
+Computer Science & Engineering
+
+### Connect With Me
+
+* GitHub: [MdAshikurRahmanShuvo](https://github.com/MdAshikurRahmanShuvo)
+* LinkedIn: [Md Ashikur Rahman Shuvo](https://linkedin.com/in/md-ashikur-rahman-shuvo)
