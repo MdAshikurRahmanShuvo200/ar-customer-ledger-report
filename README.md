@@ -30,9 +30,7 @@ With the checkbox left **unchecked**, the report shows one summarized line per c
 |<img width="558" height="269" alt="image" src="https://github.com/user-attachments/assets/478212cd-0698-4e24-afdf-77d1425a0a99" /> | <img width="926" height="458" alt="image" src="https://github.com/user-attachments/assets/107b9f40-15ba-4cb1-909f-0cbf29f892d1" />
  |
 
-With the checkbox **checked**, the report expands each customer to show every individual transaction (invoice, receipt, credit note, etc.) that makes up the balance — this is the view shown in the [sample PDF](#sample-generated-report-crystal-reports-pdf-export) below.
 
-### Sample Generated Report (Crystal Reports PDF export)
 
 ### Sample Generated Report (Crystal Reports PDF export)
 
